@@ -414,7 +414,7 @@
     // ============================================
     // Google Apps Script のウェブアプリURL をここに貼り付け
     // ============================================
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzX3eONLYGTx9TEMlvqAhl4lpYR4D152rx5avfDZZ63pl0Z3fFVEXIPhH9dHDLmXN-2hg/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzLTdGHBeL6fU-M8JPsAGyu8okkp8J-mUNerTuZB-aXrV8T1ROME9lvJTeMfAjnMfiVEA/exec';
 
     const form = document.getElementById('registrationForm');
     const successMessage = document.getElementById('successMessage');
@@ -460,14 +460,6 @@
       };
 
       try {
-        // GASはリダイレクトするためno-corsが必要
-        // ただしfile://からはno-corsでもブロックされるため
-        // formデータをURLパラメータとして送信する方式を使用
-        const params = new URLSearchParams(data);
-        const img = new Image();
-        img.src = SCRIPT_URL + '?' + params.toString();
-
-        // 別方式: hidden iframeでフォーム送信
         let iframe = document.getElementById('hidden-iframe');
         if (!iframe) {
           iframe = document.createElement('iframe');

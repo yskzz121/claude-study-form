@@ -70,6 +70,38 @@ function doPost(e) {
 
   MailApp.sendEmail(NOTIFY_EMAIL, subject, body);
 
+  // 応募者への確認メール
+  var replySubject = '【Claude勉強会】お申し込みありがとうございます';
+  var replyBody = [
+    data.name + ' 様',
+    '',
+    'Claude勉強会へのお申し込みありがとうございます。',
+    '以下の内容で受け付けいたしました。',
+    '',
+    '━━━━━━━━━━━━━━━━━━━━━━━━━━',
+    '',
+    '■ お名前: ' + data.name,
+    '■ メールアドレス: ' + data.email,
+    '■ 所属・職種: ' + (data.affiliation || '未記入'),
+    '■ Claude利用経験: ' + data.experience,
+    '■ 知りたいこと: ' + (data.expectations || '未記入'),
+    '■ 備考: ' + (data.remarks || '未記入'),
+    '',
+    '━━━━━━━━━━━━━━━━━━━━━━━━━━',
+    '',
+    '勉強会の詳細につきましては、追ってご連絡いたします。',
+    'ご不明な点がございましたら、お気軽にご連絡ください。',
+    '',
+    '━━━━━━━━━━━━━━━━━━━━━━━━━━',
+    '主催: U&I',
+    'お問い合わせ: contact@u-and-i.co.jp',
+    '━━━━━━━━━━━━━━━━━━━━━━━━━━',
+    '',
+    '※ このメールは自動送信されています。'
+  ].join('\n');
+
+  MailApp.sendEmail(data.email, replySubject, replyBody);
+
   return ContentService
     .createTextOutput(JSON.stringify({ result: 'ok' }))
     .setMimeType(ContentService.MimeType.JSON);
