@@ -460,37 +460,17 @@
       };
 
       try {
-        let iframe = document.getElementById('hidden-iframe');
-        if (!iframe) {
-          iframe = document.createElement('iframe');
-          iframe.id = 'hidden-iframe';
-          iframe.name = 'hidden-iframe';
-          iframe.style.display = 'none';
-          document.body.appendChild(iframe);
-        }
-
-        const tempForm = document.createElement('form');
-        tempForm.method = 'POST';
-        tempForm.action = SCRIPT_URL;
-        tempForm.target = 'hidden-iframe';
-
-        Object.entries(data).forEach(([key, value]) => {
-          const input = document.createElement('input');
-          input.type = 'hidden';
-          input.name = key;
-          input.value = value;
-          tempForm.appendChild(input);
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify(data)
         });
-
-        document.body.appendChild(tempForm);
-        tempForm.submit();
-        document.body.removeChild(tempForm);
-
         form.style.display = 'none';
         successMessage.style.display = 'block';
       } catch (err) {
         console.error('送信エラー:', err);
-        alert('送信に失敗しました: ' + err.message);
+        alert('送信に失敗しました。もう一度お試しください。');
         btn.disabled = false;
         btn.textContent = '送信する';
       }
