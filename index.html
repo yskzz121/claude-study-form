@@ -7,11 +7,22 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --navy: #0b1628;
+      --navy-light: #111d33;
+      --gold: #d4a843;
+      --gold-light: #f0d078;
+      --cyan: #38bdf8;
+      --purple: #a78bfa;
+      --text: #e8ecf1;
+      --text-dim: #8b95a5;
+    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: 'Noto Sans JP', sans-serif;
-      background: #f0f2f5;
+      background: var(--navy);
       color: #1a1a2e;
       min-height: 100vh;
       display: flex;
@@ -26,43 +37,137 @@
 
     /* ヘッダーカード */
     .header-card {
-      background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+      background:
+        radial-gradient(ellipse at 30% 20%, rgba(212,168,67,.1) 0%, transparent 60%),
+        radial-gradient(ellipse at 70% 80%, rgba(74,144,217,.08) 0%, transparent 60%),
+        radial-gradient(ellipse at 50% 50%, rgba(167,139,250,.05) 0%, transparent 50%),
+        var(--navy);
       border-radius: 12px 12px 0 0;
-      padding: 36px 32px;
-      color: #fff;
+      padding: 40px 32px 36px;
+      color: var(--text);
       position: relative;
       overflow: hidden;
     }
+    /* グリッドパターン */
+    .header-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(212,168,67,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(212,168,67,.06) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+      -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+      pointer-events: none;
+    }
+    /* グロー装飾 */
     .header-card::after {
       content: '';
       position: absolute;
-      top: -40px; right: -40px;
-      width: 160px; height: 160px;
-      background: rgba(255,255,255,0.08);
+      top: -60px; right: -60px;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(212,168,67,.12), transparent 70%);
       border-radius: 50%;
+      pointer-events: none;
+    }
+    .header-content {
+      position: relative;
+      z-index: 1;
+    }
+    /* Claude マスコット */
+    .mascot-row {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .claude-mascot {
+      width: 80px;
+      height: 80px;
+      animation: float 6s ease-in-out infinite;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 12px rgba(217,119,87,.3));
+    }
+    /* タイトルエリア */
+    .header-title-area {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    /* 主催バー */
+    .organizer-bar {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(212,168,67,.12);
+    }
+    .organizer-bar span {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      letter-spacing: 0.05em;
+    }
+    .organizer-logo {
+      height: 22px;
+      width: auto;
+      object-fit: contain;
+      filter: brightness(0) invert(0.85);
+      opacity: 0.8;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    .header-card .label {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--navy);
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      padding: 3px 10px;
+      border-radius: 4px;
+      margin-bottom: 12px;
     }
     .header-card h1 {
       font-size: 1.6rem;
       font-weight: 700;
       margin-bottom: 8px;
+      background: linear-gradient(90deg, var(--gold-light), #fff, var(--gold-light));
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 4s ease-in-out infinite;
     }
     .header-card p {
-      font-size: 0.95rem;
-      opacity: 0.9;
+      font-size: 0.92rem;
+      color: var(--text-dim);
       line-height: 1.6;
     }
     .header-bar {
-      height: 6px;
-      background: linear-gradient(90deg, #6c5ce7, #a29bfe, #74b9ff);
+      height: 4px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--cyan), var(--purple));
       border-radius: 0;
     }
 
     /* フォームカード */
     .form-card {
-      background: #fff;
+      background: var(--navy-light);
+      border: 1px solid rgba(212,168,67,.1);
+      border-top: none;
       border-radius: 0 0 12px 12px;
       padding: 32px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.3);
     }
 
     .field {
@@ -73,14 +178,15 @@
       font-weight: 500;
       font-size: 0.95rem;
       margin-bottom: 8px;
+      color: var(--text);
     }
     .field label .required {
-      color: #e74c3c;
+      color: #f85149;
       font-size: 0.8rem;
       margin-left: 4px;
     }
     .field label .optional {
-      color: #999;
+      color: var(--text-dim);
       font-size: 0.8rem;
       margin-left: 4px;
     }
@@ -90,18 +196,23 @@
     textarea {
       width: 100%;
       padding: 12px 14px;
-      border: 1.5px solid #ddd;
+      border: 1.5px solid rgba(212,168,67,.15);
       border-radius: 8px;
       font-family: inherit;
       font-size: 0.95rem;
       transition: border-color 0.2s, box-shadow 0.2s;
-      background: #fafbfc;
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+    }
+    input::placeholder, textarea::placeholder {
+      color: var(--text-dim);
+      opacity: 0.6;
     }
     input:focus, textarea:focus {
       outline: none;
-      border-color: #6c5ce7;
-      box-shadow: 0 0 0 3px rgba(108,92,231,0.12);
-      background: #fff;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(212,168,67,0.12);
+      background: rgba(255,255,255,.06);
     }
     textarea { resize: vertical; min-height: 100px; }
 
@@ -116,27 +227,28 @@
       align-items: center;
       gap: 10px;
       padding: 10px 14px;
-      border: 1.5px solid #e8e8e8;
+      border: 1.5px solid rgba(212,168,67,.12);
       border-radius: 8px;
       cursor: pointer;
       transition: all 0.2s;
+      color: var(--text);
     }
     .radio-item:hover {
-      border-color: #a29bfe;
-      background: #f8f7ff;
+      border-color: rgba(212,168,67,.35);
+      background: rgba(212,168,67,.04);
     }
     .radio-item input[type="radio"] {
-      accent-color: #6c5ce7;
+      accent-color: var(--gold);
       width: 18px; height: 18px;
       cursor: pointer;
     }
     .radio-item input[type="radio"]:checked + span {
       font-weight: 500;
-      color: #6c5ce7;
+      color: var(--gold-light);
     }
     .radio-item:has(input:checked) {
-      border-color: #6c5ce7;
-      background: #f8f7ff;
+      border-color: var(--gold);
+      background: rgba(212,168,67,.06);
     }
 
     /* 送信ボタン */
@@ -144,12 +256,12 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: linear-gradient(135deg, #6c5ce7, #a29bfe);
-      color: #fff;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: var(--navy);
       border: none;
       padding: 14px 36px;
       font-size: 1rem;
-      font-weight: 600;
+      font-weight: 700;
       font-family: inherit;
       border-radius: 8px;
       cursor: pointer;
@@ -157,7 +269,7 @@
     }
     .submit-btn:hover {
       transform: translateY(-1px);
-      box-shadow: 0 4px 16px rgba(108,92,231,0.3);
+      box-shadow: 0 4px 20px rgba(212,168,67,0.35);
     }
     .submit-btn:active { transform: translateY(0); }
     .submit-btn:disabled {
@@ -180,23 +292,23 @@
     .success-message h2 {
       font-size: 1.3rem;
       margin-bottom: 12px;
-      color: #2d3436;
+      color: var(--gold-light);
     }
     .success-message p {
-      color: #636e72;
+      color: var(--text-dim);
       line-height: 1.6;
     }
 
     /* エラー */
     .field-error {
-      color: #e74c3c;
+      color: #f85149;
       font-size: 0.82rem;
       margin-top: 6px;
       display: none;
     }
     .field.has-error input,
     .field.has-error textarea {
-      border-color: #e74c3c;
+      border-color: #f85149;
     }
     .field.has-error .field-error {
       display: block;
@@ -206,6 +318,10 @@
       body { padding: 20px 12px; }
       .header-card { padding: 28px 20px; }
       .header-card h1 { font-size: 1.3rem; }
+      .claude-mascot { width: 56px; height: 56px; }
+      .claude-mascot { width: 64px; height: 64px; }
+      .mascot-row { margin-bottom: 16px; }
+      .organizer-logo { height: 18px; }
       .form-card { padding: 24px 20px; }
     }
   </style>
@@ -213,8 +329,22 @@
 <body>
   <div class="container">
     <div class="header-card">
-      <h1>Claude 勉強会 参加申し込み</h1>
-      <p>以下のフォームに必要事項をご記入のうえ、送信してください。</p>
+      <div class="header-content">
+        <div class="mascot-row">
+          <img src="clawd_logo.png" alt="Clawd" class="claude-mascot">
+        </div>
+        <!-- タイトルエリア -->
+        <div class="header-title-area">
+          <span class="label">REGISTRATION FORM</span>
+          <h1>Claude 勉強会 参加申し込み</h1>
+          <p>以下のフォームに必要事項をご記入のうえ、送信してください。</p>
+        </div>
+        <!-- 主催 -->
+        <div class="organizer-bar">
+          <span>Organized by</span>
+          <img src="uandi_logo.png" alt="U&I" class="organizer-logo">
+        </div>
+      </div>
     </div>
     <div class="header-bar"></div>
     <div class="form-card">
@@ -284,7 +414,7 @@
     // ============================================
     // Google Apps Script のウェブアプリURL をここに貼り付け
     // ============================================
-    const SCRIPT_URL = '__YOUR_GAS_WEB_APP_URL__';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzX3eONLYGTx9TEMlvqAhl4lpYR4D152rx5avfDZZ63pl0Z3fFVEXIPhH9dHDLmXN-2hg/exec';
 
     const form = document.getElementById('registrationForm');
     const successMessage = document.getElementById('successMessage');
@@ -330,22 +460,45 @@
       };
 
       try {
-        if (SCRIPT_URL === '__YOUR_GAS_WEB_APP_URL__') {
-          // GAS未設定の場合はデモモード
-          console.log('送信データ:', data);
-          await new Promise(r => setTimeout(r, 800));
-        } else {
-          await fetch(SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-          });
+        // GASはリダイレクトするためno-corsが必要
+        // ただしfile://からはno-corsでもブロックされるため
+        // formデータをURLパラメータとして送信する方式を使用
+        const params = new URLSearchParams(data);
+        const img = new Image();
+        img.src = SCRIPT_URL + '?' + params.toString();
+
+        // 別方式: hidden iframeでフォーム送信
+        let iframe = document.getElementById('hidden-iframe');
+        if (!iframe) {
+          iframe = document.createElement('iframe');
+          iframe.id = 'hidden-iframe';
+          iframe.name = 'hidden-iframe';
+          iframe.style.display = 'none';
+          document.body.appendChild(iframe);
         }
+
+        const tempForm = document.createElement('form');
+        tempForm.method = 'POST';
+        tempForm.action = SCRIPT_URL;
+        tempForm.target = 'hidden-iframe';
+
+        Object.entries(data).forEach(([key, value]) => {
+          const input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = key;
+          input.value = value;
+          tempForm.appendChild(input);
+        });
+
+        document.body.appendChild(tempForm);
+        tempForm.submit();
+        document.body.removeChild(tempForm);
+
         form.style.display = 'none';
         successMessage.style.display = 'block';
       } catch (err) {
-        alert('送信に失敗しました。もう一度お試しください。');
+        console.error('送信エラー:', err);
+        alert('送信に失敗しました: ' + err.message);
         btn.disabled = false;
         btn.textContent = '送信する';
       }

@@ -27,7 +27,14 @@ var NOTIFY_EMAIL = 'contact@u-and-i.co.jp';
 
 function doPost(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  var data = JSON.parse(e.postData.contents);
+
+  // JSON送信とフォーム送信の両方に対応
+  var data;
+  try {
+    data = JSON.parse(e.postData.contents);
+  } catch (err) {
+    data = e.parameter;
+  }
 
   // スプレッドシートに保存
   sheet.appendRow([
@@ -66,4 +73,9 @@ function doPost(e) {
   return ContentService
     .createTextOutput(JSON.stringify({ result: 'ok' }))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+// GETリクエストにも対応（バックアップ）
+function doGet(e) {
+  return doPost(e);
 }
