@@ -414,7 +414,7 @@
     // ============================================
     // Google Apps Script のウェブアプリURL をここに貼り付け
     // ============================================
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxkO-vltfPtLNDhX_I_UMevrf792I9rKIiRuC9ojdeYNgOh06WvUHTNAJaSSJZq7LC-_g/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby44zAkQJXiC0JfqEfqMJ3UTzfZGJ4ofVWHeTigXxxmGnKkPiWm9i1pFQKjP4xiVUuz/exec';
 
     const form = document.getElementById('registrationForm');
     const successMessage = document.getElementById('successMessage');
@@ -460,12 +460,9 @@
       };
 
       try {
-        await fetch(SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify(data)
-        });
+        const params = new URLSearchParams(data);
+        const url = SCRIPT_URL + '?' + params.toString();
+        await fetch(url, { mode: 'no-cors' });
         form.style.display = 'none';
         successMessage.style.display = 'block';
       } catch (err) {
