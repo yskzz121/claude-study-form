@@ -318,7 +318,6 @@
       body { padding: 20px 12px; }
       .header-card { padding: 28px 20px; }
       .header-card h1 { font-size: 1.3rem; }
-      .claude-mascot { width: 56px; height: 56px; }
       .claude-mascot { width: 64px; height: 64px; }
       .mascot-row { margin-bottom: 16px; }
       .organizer-logo { height: 18px; }
@@ -462,14 +461,26 @@
       try {
         const params = new URLSearchParams(data);
         const url = SCRIPT_URL + '?' + params.toString();
-        await fetch(url, { mode: 'no-cors' });
+
+        // GASはリダイレクトするためno-corsを使用（レスポンス内容は取得不可）
+        // タイムアウトで送信失敗を検知
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 15000);
+
+        await fetch(url, { mode: 'no-cors', signal: controller.signal });
+        clearTimeout(timeout);
+
         form.style.display = 'none';
         successMessage.style.display = 'block';
       } catch (err) {
         console.error('送信エラー:', err);
-        alert('送信に失敗しました。もう一度お試しください。');
+        if (err.name === 'AbortError') {
+          alert('送信がタイムアウトしました。通信環境を確認して再度お試しください。');
+        } else {
+          alert('送信に失敗しました。もう一度お試しください。');
+        }
         btn.disabled = false;
-        btn.textContent = '送信する';
+        btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg> 送信する';
       }
     });
   </script>
