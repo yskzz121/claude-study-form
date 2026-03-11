@@ -23,7 +23,7 @@
 // =============================================
 
 // 通知先メールアドレス
-var NOTIFY_EMAIL = 'order@u-and-i.co.jp';
+var NOTIFY_EMAIL = 'contact@u-and-i.co.jp';
 
 function doPost(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
